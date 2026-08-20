@@ -1,49 +1,45 @@
-[app]
+name: Compile Cyber-Sentinel APK
 
-# (str) Title of your application
-title = Cyber-Sentinel
+on:
+  push:
+    branches: [ main ]
 
-# (str) Package name
-package.name = cybersentinel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-# (str) Package domain (needed for android packaging)
-package.domain = org.cybersentinel
+      - name: Set up Git Identity
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
 
-# (str) Source code where the main.py lives
-source.dir = .
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-# (str) Source files where the *.py file resides
-source.include_exts = py,png,jpg,kv,atlas,json
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-# (str) Application versioning
-version = 0.1
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-# (list) Application requirements
-requirements = python3,kivy,pillow
+      - name: Install Buildozer and Cython
+        run: |
+          pip install --upgrade pip
+          pip install Cython==0.29.36 buildozer
 
-# (list) Supported orientations
-orientation = portrait
+      - name: Build APK with Buildozer
+        run: buildozer android debug
 
-# (list) The permissions for your application
-android.permissions = INTERNET,ACCESS_NETWORK_STATE,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
-
-# (int) Target Android API
-android.api = 33
-
-# (int) Minimum API your APK will support
-android.minapi = 21
-
-# (bool) Fullscreen
-fullscreen = 0
-
-
-[buildozer]
-
-# (int) Log level
-log_level = 2
-
-# (str) Path to build artifact, storage, etc.
-bin_dir = ./bin
-
-# (bool) Accept Android SDK licenses automatically
-android.accept_sdk_license = True
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cybersentinel-release-apk
+          path: bin/*.apk
