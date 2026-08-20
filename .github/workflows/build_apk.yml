@@ -34,6 +34,13 @@ jobs:
           pip install --upgrade pip
           pip install --user Cython==0.29.36 buildozer
 
+      - name: Pre-accept Android SDK Licenses
+        run: |
+          mkdir -p ~/.android
+          echo "### License" > ~/.android/repositories.cfg
+          # Force SDK manager directory setup if available
+          export PATH=$PATH:~/.buildozer/android/platform/android-sdk/tools/bin
+
       - name: Build APK with Buildozer
         run: buildozer android debug
 
