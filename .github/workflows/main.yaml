@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install system dependencies
+      - name: Update apt and install build tools
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -31,15 +31,17 @@ jobs:
             zlib1g-dev libncurses5-dev libncursesw5-dev \
             libffi-dev libssl-dev build-essential ccache
 
-      - name: Install Buildozer and Cython
-        run: |
-          python -m pip install --upgrade pip
-          pip install "cython<3.0"
-          pip install --upgrade buildozer
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install Cython
+        run: pip install "cython<3.0"
+
+      - name: Install Buildozer
+        run: pip install --upgrade buildozer
 
       - name: Build with Buildozer
-        run: |
-          buildozer -v android debug
+        run: buildozer -v android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
