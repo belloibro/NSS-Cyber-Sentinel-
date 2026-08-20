@@ -14,6 +14,7 @@ source.dir = .
 
 # (list) Source files to include (let it catch python files, images, etc.)
 source.include_exts = py,png,jpg,kv,atlas
+main.filename = main.py
 
 # (str) Application versioning
 version = 0.1
