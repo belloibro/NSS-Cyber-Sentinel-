@@ -9,51 +9,37 @@ package.name = cybersentinel
 # (str) Package domain (needed for android packaging)
 package.domain = org.cybersentinel
 
+# (str) Source code where the main.py lives
+source.dir = .
+
 # (str) Source files where the *.py file resides
 source.include_exts = py,png,jpg,kv,atlas,json
 
-# (list) Source files to include (let it blank to include all files)
-source.include_patterns = assets/*,images/*
+# (str) Application versioning
+version = 0.1
 
 # (list) Application requirements
-# comma separated e.g. requirements = sqlite3,kivy
 requirements = python3,kivy,pillow
-
-# (str) Customized icon
-#icon.filename = %(source.dir)s/data/icon.png
-
-# (str) Customized presplash
-#presplash.filename = %(source.dir)s/data/presplash.png
 
 # (list) Supported orientations
 orientation = portrait
 
 # (list) The permissions for your application
-# e.g. android.permissions = INTERNET,CAMERA
 android.permissions = INTERNET,ACCESS_NETWORK_STATE,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 
-# (int) Target Android API, should be as high as possible.
+# (int) Target Android API
 android.api = 33
 
-# (int) Minimum API your APK will support.
+# (int) Minimum API your APK will support
 android.minapi = 21
 
-# (str) Android SDK version to use
-#android.sdk = 20
-
-# (str) Android NDK version to use
-#android.ndk = 25b
-
-# (bool) Indicate whether the application should be fullscreen or not
+# (bool) Fullscreen
 fullscreen = 0
-
-# (string) Presplash background color
-#android.presplash_color = #FFFFFF
 
 
 [buildozer]
 
-# (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
+# (int) Log level
 log_level = 2
 
 # (str) Path to build artifact, storage, etc.
