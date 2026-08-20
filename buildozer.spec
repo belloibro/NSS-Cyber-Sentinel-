@@ -1,45 +1,29 @@
-name: Compile Cyber-Sentinel APK
+[app]
 
-on:
-  push:
-    branches: [ main ]
+# (str) Title of your application
+title = Cyber-Sentinel
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# (str) Package name
+package.name = cybersentinel
 
-      - name: Set up Git Identity
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
+# (str) Package domain (needed for android packaging)
+package.domain = org.cybersentinel
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+# (str) Source files to include (let it find python files)
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+# (str) Application version
+version = 0.1
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+# (list) Application requirements
+requirements = python3,kivy
 
-      - name: Install Buildozer and Cython
-        run: |
-          pip install --upgrade pip
-          pip install Cython==0.29.36 buildozer
+# (str) Supported orientations
+orientation = portrait
 
-      - name: Build APK with Buildozer
-        run: buildozer android debug
+# (bool) Indicate if the application should be fullscreen or not
+fullscreen = 0
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: cybersentinel-release-apk
-          path: bin/*.apk
+# (list) Permissions
+android.permissions = INTERNET
