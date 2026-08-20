@@ -4,15 +4,14 @@ on:
   push:
     branches: [ main ]
 
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: false
 
       - name: Set up Git Identity
         run: |
@@ -24,22 +23,19 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
       - name: Install Buildozer and Cython
         run: |
           pip install --upgrade pip
-          pip install --user Cython==0.29.36 buildozer
-
-      - name: Pre-accept Android SDK Licenses
-        run: |
-          mkdir -p ~/.android
-          echo "### License" > ~/.android/repositories.cfg
-          # Force SDK manager directory setup if available
-          export PATH=$PATH:~/.buildozer/android/platform/android-sdk/tools/bin
+          pip install Cython==0.29.36 buildozer
 
       - name: Build APK with Buildozer
         run: buildozer android debug
